@@ -6,6 +6,8 @@ void main() {
 }
 
 class CalculatorApp extends StatelessWidget {
+  const CalculatorApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,6 +21,8 @@ class CalculatorApp extends StatelessWidget {
 }
 
 class CalculatorScreen extends StatefulWidget {
+  const CalculatorScreen({super.key});
+
   @override
   _CalculatorScreenState createState() => _CalculatorScreenState();
 }
@@ -36,7 +40,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   void _calculateResult() {
     try {
       final expression = Expression.parse(_expression);
-      final evaluator = const ExpressionEvaluator();
+      const evaluator = ExpressionEvaluator();
       final result = evaluator.eval(expression, {});
       setState(() {
         _result = result.toString();
@@ -47,6 +51,13 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       });
     }
   }
+
+  void _squareNumber() {
+  setState(() {
+    double num = double.parse(_expression);
+    _expression = (num * num).toString();
+  });
+}
 
   void _clearExpression() {
     setState(() {
@@ -59,7 +70,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
+        title: const Center(
             child: Text(
             'Sean',
             style: TextStyle(fontSize: 48),
@@ -70,21 +81,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         children: [
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               alignment: Alignment.bottomRight,
               child: Text(
                 _expression.isEmpty ? '0' : _expression,
-                style: TextStyle(fontSize: 48),
+                style: const TextStyle(fontSize: 48),
               ),
             ),
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               alignment: Alignment.bottomRight,
               child: Text(
                 _result.isEmpty ? '0' : _result,
-                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -122,6 +133,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           ),
           Row(
             children: [
+              _buildButton('^2'),
+            ]
+          ),
+          Row(
+            children: [
               _buildButton('C'),
             ],
           ),
@@ -138,13 +154,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               _calculateResult();
             } else if (text == 'C') {
               _clearExpression();
-            } else {
+            } 
+            else if (text == '^2'){
+              _squareNumber();
+            }
+            else {
               _addToExpression(text);
             }
           },
           child: Text(
             text,
-            style: TextStyle(fontSize: 24),
+            style: const TextStyle(fontSize: 24),
           ),
         ),
       );
